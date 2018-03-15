@@ -22,7 +22,13 @@ include_directories(
   ${STAGE_INCLUDE_DIRS}
 )
 
-catkin_package()
+catkin_package(
+  CATKIN_DEPENDS
+    geometry_msgs
+    nav_msgs
+    sensor_msgs
+    std_msgs
+)
 
 # Declare a cpp executable
 add_executable(stageros src/stageros.cpp)
