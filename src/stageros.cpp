@@ -239,7 +239,7 @@ StageNode::ghfunc(Stg::Model* mod, StageNode* node)
   //printf( "inspecting %s, parent\n", mod->Token() );
 
   if (dynamic_cast<Stg::ModelRanger *>(mod)) {
-     node->lasermodels.push_back(dynamic_cast<Stg::ModelRanger *>(mod));
+     node->rangermodels.push_back(dynamic_cast<Stg::ModelRanger *>(mod));
   }
   if (dynamic_cast<Stg::ModelPosition *>(mod)) {
      Stg::ModelPosition * p = dynamic_cast<Stg::ModelPosition *>(mod);
@@ -340,13 +340,13 @@ StageNode::SubscribeModels()
 
 	ROS_INFO( "Subscribed to Stage position model \"%s\"", this->positionmodels[r]->Token() ); 
 		      
-        for (size_t s = 0; s < this->lasermodels.size(); s++)
+        for (size_t s = 0; s < this->rangermodels.size(); s++)
         {
-	  if (this->lasermodels[s] and this->lasermodels[s]->Parent() == new_robot->positionmodel)
+	  if (this->rangermodels[s] and this->rangermodels[s]->Parent() == new_robot->positionmodel)
             {
-                new_robot->lasermodels.push_back(this->lasermodels[s]);
-                this->lasermodels[s]->Subscribe();
-	      ROS_INFO( "subscribed to Stage ranger \"%s\"", this->lasermodels[s]->Token() ); 
+                new_robot->rangermodels.push_back(this->rangermodels[s]);
+                this->rangermodels[s]->Subscribe();
+	      ROS_INFO( "subscribed to Stage ranger \"%s\"", this->rangermodels[s]->Token() ); 
             }
         }
 
@@ -364,7 +364,7 @@ StageNode::SubscribeModels()
 	// TODO - print the topic names nicely as well
         ROS_INFO("Robot %s provided %lu rangers and %lu cameras",
 		 new_robot->positionmodel->Token(),
-		 new_robot->lasermodels.size(),
+		 new_robot->rangermodels.size(),
 		 new_robot->cameramodels.size() );
 
         new_robot->odom_pub = n_.advertise<nav_msgs::Odometry>(mapName(ODOM, r, static_cast<Stg::Model*>(new_robot->positionmodel)), 10);
